@@ -44,6 +44,13 @@ class Distance(models.Model):
     
 class Patient(models.Model):
     """Model representing a patient."""
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+        ('U', 'Prefer not to say')
+    )
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     birth_date = models.DateField(null=True, blank=True)
