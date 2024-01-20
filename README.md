@@ -1,39 +1,67 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Introduction
 
-Welcome,
+This document presents the project structure for a web-based application that can significantly benefit various organizations such as ambulatory care services, drug stores, and similar entities. The primary aim is to develop an MVP (Minimum Viable Product) that centers on key functionalities crucial for enhancing operational efficiency in patient or client management and route optimization. In line with the MVP strategy, certain aspects like patient or client data are deliberately simplified to meet the minimum necessary requirements for the application's effective functioning. This approach ensures a concentrated development effort on the essential features, providing immediate practical benefits.
 
-This is the Code Institute student template for Codeanywhere. If you are using Gitpod then you need [this template](https://github.com/Code-Institute-Org/gitpod-full-template) instead.  We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+The application is designed to streamline management processes and route planning, offering a straightforward digital interface for easy interaction. It employs modern web technologies to facilitate effective communication between the front-end and back-end via API and JSON. This is vital for ensuring real-time data exchange, a necessity in the fast-paced environments of healthcare and retail. Deployed on Heroku, the application guarantees reliable access and scalability to cater to the dynamic needs of various service providers. Beyond being a technological tool, this application is envisioned as a means to advance more personalized, efficient, and customer-centric service delivery.
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **August 30th, 2023**
+## Project Structure: Epics and User Stories
 
-## Codeanywhere Reminders
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere, in the terminal, type:
+# Project Structure: Epics and User Stories
 
-`python3 -m http.server`
+## Epic 1: Build Frontend
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+### User Story 1.1
+As a visitor, I want to access a landing page with overall information about the application, so I can understand its purpose and features.
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere with no-cache, you can use this alias for `python3 -m http.server`.
+### User Story 1.2
+As a visitor, I want the ability to register for an account or log in, so I can access personalized features of the application.
 
-`http_server`
+### User Story 1.3
+As a logged-in user, I want to be redirected to a dashboard where I can manage patients, so I can easily add or edit patient information.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+### User Story 1.4
+As a user, I want to view a grid or table of patients, so I can select them for route planning.
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+### User Story 1.5
+As a user, I want to click a button to calculate routes between selected patients, so I can efficiently plan visits or appointments.
 
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+## Epic 2: Build Backend
 
-To log into the Heroku toolbelt CLI:
+### User Story 2.1
+As a system, I need to securely handle user registration and login, so that user data is protected.
 
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+### User Story 2.2
+As a system, I need to store and manage patient information, so that users can add, view, and edit patient details.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+### User Story 2.3
+As a system, I need an API to communicate with the frontend using JSON, to manage and provide patient data and calculated routes.
 
----
+## Epic 3: Deploy on Heroku
 
-Happy coding!
+### User Story 3.1
+As a developer, I want to deploy the application on Heroku, so that it is accessible online for users.
+
+### User Story 3.2
+As a system administrator, I want to ensure that the application runs smoothly on Heroku, with necessary resources and configurations in place.
+
+## Epic 4: Ensure Application Security
+
+### User Story 4.1
+As a system, I need to implement robust security measures, so that user data and patient information are protected against unauthorized access and breaches.
+
+## Epic 5: User Experience and Interface Design
+
+### User Story 5.1
+As a user, I want a user-friendly interface, so that I can navigate and use the application with ease.
+
+### User Story 5.2
+As a user, I want clear and informative feedback from the system, so that I can understand the outcomes of my actions (like successful patient additions, errors, etc.).
+
+## Epic 6: Testing and Quality Assurance
+
+### User Story 6.1
+As a developer, I want to thoroughly test the application, so that users encounter minimal bugs and issues.
+
+### User Story 6.2
+As a user, I expect a reliable and consistent performance, so that I can trust and effectively use the application.
