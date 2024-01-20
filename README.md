@@ -45,23 +45,34 @@ As a developer, I want to deploy the application on Heroku, so that it is access
 ### User Story 3.2
 As a system administrator, I want to ensure that the application runs smoothly on Heroku, with necessary resources and configurations in place.
 
-## Epic 4: Ensure Application Security
+## Epic 4: Create API for Frontend-Backend Communication
 
-### User Story 4.1
-As a system, I need to implement robust security measures, so that user data and patient information are protected against unauthorized access and breaches.
+### User Story 4.1 - RESTful API Development
+As a developer, I want to develop a RESTful API for efficient communication between the frontend and backend.
 
-## Epic 5: User Experience and Interface Design
+### User Story 4.2 - API Documentation
+As a developer, I want to document the API, so that it is easy for other developers to understand and use.
+
+### User Story 4.3 - Frontend Integration with API
+As a frontend developer, I want to integrate the frontend application with the backend API.
+
+## Epic 5: Ensure Application Security
 
 ### User Story 5.1
-As a user, I want a user-friendly interface, so that I can navigate and use the application with ease.
+As a system, I need to implement robust security measures, so that user data and patient information are protected against unauthorized access and breaches.
 
-### User Story 5.2
-As a user, I want clear and informative feedback from the system, so that I can understand the outcomes of my actions (like successful patient additions, errors, etc.).
-
-## Epic 6: Testing and Quality Assurance
+## Epic 6: User Experience and Interface Design
 
 ### User Story 6.1
-As a developer, I want to thoroughly test the application, so that users encounter minimal bugs and issues.
+As a user, I want a user-friendly interface, so that I can navigate and use the application with ease.
 
 ### User Story 6.2
+As a user, I want clear and informative feedback from the system, so that I can understand the outcomes of my actions (like successful patient additions, errors, etc.).
+
+## Epic 7: Testing and Quality Assurance
+
+### User Story 7.1
+As a developer, I want to thoroughly test the application, so that users encounter minimal bugs and issues.
+
+### User Story 7.2
 As a user, I expect a reliable and consistent performance, so that I can trust and effectively use the application.
