@@ -15,6 +15,15 @@ class PatientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
-        address = Address.objects.create(**address_data)
+        # Check if an address with these details already exists
+        address, created = Address.objects.get_or_create(
+            street=address_data['street'],
+            street_number=address_data['street_number'],
+            zip_code=address_data['zip_code'],
+            city=address_data['city'],
+            country=address_data['country'],
+            defaults=address_data
+        )
+        # Create the patient with the existing or new address
         patient = Patient.objects.create(address=address, **validated_data)
         return patient
