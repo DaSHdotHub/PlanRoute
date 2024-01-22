@@ -18,6 +18,10 @@ class Distance(models.Model):
     from_address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="distance_from")
     to_address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="distance_to")
     distance_in_km = models.FloatField(help_text="Distance in kilometers")
+    last_updated = models.DateTimeField(auto_now=True)
+    travel_mode = models.CharField(max_length=50, default='car', help_text="Mode of travel")
+    depart_at = models.DateTimeField(help_text="Departure time")
+
 
     def __str__(self):
         return f"{self.distance_in_km} km from {self.from_address} to {self.to_address}"

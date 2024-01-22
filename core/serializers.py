@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Patient, Address
+from .models import Patient, Address, Distance
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,3 +12,8 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ['id', 'gender', 'firstname', 'lastname', 'birth_date', 'address', 'creator', 'last_editor']
+        
+class DistanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Distance
+        fields = ['id', 'from_address', 'to_address', 'distance_in_km']

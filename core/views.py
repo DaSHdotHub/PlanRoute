@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Patient, Address
-from .serializers import PatientSerializer, AddressSerializer
+from .models import Patient, Address, Distance
+from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer
 
 class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all()
@@ -68,3 +68,7 @@ class AddressViewSet(viewsets.ModelViewSet):
         # Return the address ID and a 200 status code if the address already exists.
         else:
             return Response({"message": "Address already exists", "id": address.id}, status=status.HTTP_200_OK)
+
+class DistanceViewSet(viewsets.ModelViewSet):
+    queryset = Distance.objects.all()
+    serializer_class = DistanceSerializer
