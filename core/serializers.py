@@ -16,4 +16,4 @@ class PatientSerializer(serializers.ModelSerializer):
 class DistanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distance
-        fields = ['id', 'from_address', 'to_address', 'distance_in_km']
+        fields = '__all__'

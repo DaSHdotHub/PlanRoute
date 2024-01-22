@@ -40,10 +40,13 @@ def calculate_route_distance(from_address, to_address, travel_mode='car', depart
         # Handle error or no result case
         return None
     
-def create_and_calculate_address_pairs():
+def create_address_pairs():
     addresses = list(Address.objects.all())
     for from_address, to_address in permutations(addresses, 2):
-        # Avoid duplicating the distance calculation
-        if not Distance.objects.filter(from_address=from_address, to_address=to_address).exists():
-            distance = calculate_route_distance(from_address, to_address)
-            Distance.objects.create(from_address=from_address, to_address=to_address, distance_in_km=distance)
+        if from_address != to_address and not Distance.objects.filter(from_address=from_address, to_address=to_address).exists():
+            Distance.objects.create(from_address=from_address, to_address=to_address)
+
+def identify_missing_distances():
+    missing_distances = Distance.objects.filter(distance_in_km__isnull=True)
+    for distance in missing_distances:
+        print(f"Missing distance from {distance.from_address} to {distance.to_address}")
