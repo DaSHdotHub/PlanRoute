@@ -25,19 +25,22 @@ def update_coordinates(address_instance):
         pass
     
 def calculate_route_distance(from_address, to_address, travel_mode='car', depart_at=None):
-    if depart_at is None:
-        depart_at = datetime.now().replace(hour=13, minute=0, second=0, microsecond=0)  # 1 PM
+    try:
+        if depart_at is None:
+            depart_at = datetime.now().replace(hour=13, minute=0, second=0, microsecond=0)
 
-    url = f"https://api.tomtom.com/routing/1/calculateRoute/{from_address.latitude},{from_address.longitude}:{to_address.latitude},{to_address.longitude}/json?routeType=fastest&avoid=tollRoads,unpavedRoads,ferries&travelMode={travel_mode}&departAt={depart_at.isoformat()}&key={os.environ.get('API_KEY')}"
+        url = f"https://api.tomtom.com/routing/1/calculateRoute/{from_address.latitude},{from_address.longitude}:{to_address.latitude},{to_address.longitude}/json?routeType=fastest&avoid=tollRoads&avoid=unpavedRoads&avoid=ferries&travelMode={travel_mode}&departAt={depart_at.isoformat()}&key={os.environ.get('API_KEY')}"
 
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        # Extract distance from the response and return
-        distance = data['routes'][0]['summary']['lengthInMeters'] / 1000  # Convert meters to kilometers
-        return distance
-    else:
-        # Handle error or no result case
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            distance = data['routes'][0]['summary']['lengthInMeters'] / 1000
+            return distance
+        else:
+            print("Failed to get a valid response from the API:", response.status_code, response.text)
+            return None
+    except Exception as e:
+        print("An error occurred while calculating the route distance:", e)
         return None
     
 def create_address_pairs():
@@ -48,5 +51,10 @@ def create_address_pairs():
 
 def identify_missing_distances():
     missing_distances = Distance.objects.filter(distance_in_km__isnull=True)
-    for distance in missing_distances:
-        print(f"Missing distance from {distance.from_address} to {distance.to_address}")
+    for distance_obj in missing_distances:
+        calculated_distance = calculate_route_distance(distance_obj.from_address, distance_obj.to_address)
+        if calculated_distance is not None:
+            distance_obj.distance_in_km = calculated_distance
+            distance_obj.save()
+        else:
+            print("Failed to calculate distance for:", distance_obj)
