@@ -16,6 +16,10 @@ import dj_database_url
 if os.path.isfile('env.py'):
     import env
 
+# Check if we are in development mode    
+DEVELOPMENT = os.environ.get('DEVELOPMENT') == 'True'
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,13 +31,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.environ.get("DEVELOPMENT") == 'True' else False
-
-ALLOWED_HOSTS = [
-    '.herokuapp.com',
-    '127.0.0.1',
-]
-
+if DEVELOPMENT:
+    DEBUG = True
+    ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'localhost',
+        ]
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ['.herokuapp.com']
+    CORS_ALLOW_ALL_ORIGINS = False
+    allowed_origins = os.environ.get('ALLOWED_CORS_ORIGINS', '')
+    CORS_ALLOWED_ORIGINS = allowed_origins.split(',') if allowed_origins else []
 
 # Application definition
 
@@ -46,12 +56,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'routing.apps.RoutingConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -90,7 +102,6 @@ DATABASES = {
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com"
 ]
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
