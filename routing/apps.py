@@ -6,5 +6,5 @@ class RoutingConfig(AppConfig):
     name = 'routing'
     
     def ready(self):
-        import routing.utils
+        import routing.signals
         print('Signals imported')
