@@ -2,8 +2,12 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Patient, Address, Distance
 from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+
 
 class PatientViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
 
@@ -43,6 +47,8 @@ class PatientViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_BAD_REQUEST)
     
 class AddressViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
     def create(self, request, *args, **kwargs):
@@ -70,5 +76,7 @@ class AddressViewSet(viewsets.ModelViewSet):
             return Response({"message": "Address already exists", "id": address.id}, status=status.HTTP_200_OK)
 
 class DistanceViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+
     queryset = Distance.objects.all()
     serializer_class = DistanceSerializer
