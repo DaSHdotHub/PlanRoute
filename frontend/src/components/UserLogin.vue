@@ -31,14 +31,13 @@ export default {
           username: this.username,
           password: this.password
         });
-        this.$emit('auth-success', response.data);
         localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
-        if (response.data.access) {
-          this.$router.push({name: 'Dashboard' });
-        }
+        this.$router.push({ name: 'Dashboard' });
       } catch (error) {
         console.error('Login error:', error);
+        // TODO: handle login error
       }
     }
   }

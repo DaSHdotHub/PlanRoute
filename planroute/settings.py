@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 import dj_database_url
 if os.path.isfile('env.py'):
     import env
@@ -143,19 +144,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Edit JWT uptime
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# PATHS TO STATIC FILES, VUE App
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/dist')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# PATHS TO STATIC FILES, VUE App
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/dist')
-]
