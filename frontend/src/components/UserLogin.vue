@@ -34,6 +34,9 @@ export default {
         this.$emit('auth-success', response.data);
         localStorage.setItem('access_token', response.data.access);
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+        if (response.data.access) {
+          this.$router.push({name: 'Dashboard' });
+        }
       } catch (error) {
         console.error('Login error:', error);
       }
