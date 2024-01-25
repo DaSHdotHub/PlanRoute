@@ -17,8 +17,8 @@
           <td>{{ patient.firstname }} {{ patient.lastname }}</td>
           <td>{{ formatAddress(patient.address) }}</td>
           <td>
-            <span @click="viewPatient(patient)">👁️</span>
-            <span v-if="userCanEdit" @click="editPatient(patient)">✏️</span>
+            <b-icon icon="eye" @click="viewPatient(patient)" />
+            <b-icon v-if="userCanEdit" icon="pencil" @click="editPatient(patient)" />
           </td>
         </tr>
       </tbody>
