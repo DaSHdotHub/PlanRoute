@@ -1,7 +1,7 @@
 <template>
   <b-footer class="text-muted">
     <b-container>
-      <p>© 2024 by Your Name</p>
+      <p>© 2024 by Daniil Shaulov</p>
       <p>
         <b-link href="https://linkedin.com" target="_blank">LinkedIn</b-link> |
         <b-link href="https://xing.com" target="_blank">Xing</b-link> |
