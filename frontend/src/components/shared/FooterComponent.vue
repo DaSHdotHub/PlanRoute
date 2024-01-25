@@ -1,14 +1,30 @@
 <template>
-  <b-footer class="text-muted">
-    <b-container>
-      <p>© 2024 by Daniil Shaulov</p>
-      <p>
-        <b-link href="https://linkedin.com" target="_blank">LinkedIn</b-link> |
-        <b-link href="https://xing.com" target="_blank">Xing</b-link> |
-        <b-link href="https://github.com" target="_blank">GitHub</b-link>
-      </p>
-    </b-container>
-  </b-footer>
+  <footer class="footer text-center">
+  <!-- Social Media Icons -->
+  <div class="container p-4 pb-0">
+    <section class="mb-4">
+      <!-- GitHub -->
+      <a class="btn text-white btn-floating m-1" style="background-color: #333333;" href="https://github.com/yourusername" role="button">
+        <i class="fab fa-github"></i>
+      </a>
+
+      <!-- LinkedIn -->
+      <a class="btn text-white btn-floating m-1" style="background-color: #0077b5;" href="https://linkedin.com/in/yourusername" role="button">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+
+      <!-- Xing -->
+      <a class="btn text-white btn-floating m-1" style="background-color: #006567;" href="https://xing.com/profile/yourusername" role="button">
+        <i class="fab fa-xing"></i>
+      </a>
+    </section>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom text-center p-3">
+    PlanRoute © 2024 by Daniil Shaulov
+  </div>
+</footer>
 </template>
   
 <script>
@@ -19,20 +35,24 @@ export default {
 
 <style scoped>
 /* Styling for the Footer */
-footer {
-  background-color: #98ff98; /* Mint color */
-  color: white;
-  text-align: center;
-  padding: 1rem 0;
+.footer {
+  background-color: #98ff98; /* Example color */
 }
 
-footer a {
+.btn-floating {
+  height: 40px;
+  display: inline-block;
+  margin-right: 10px;
+  border-radius: 50%;
   color: #fff;
-  margin: 0 10px;
-  transition: color 0.3s ease;
+  font-size: 20px;
 }
 
-footer a:hover {
-  color: #ddd;
+.footer-bottom {
+  margin: 0;
+  color: #fff;
+  padding-top: auto;
+  margin-top: auto; 
+  background-color: #0e6d0e; /* Example color */
 }
 </style>
