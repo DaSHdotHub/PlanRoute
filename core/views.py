@@ -1,8 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Patient, Address, Distance
-from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer
+from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.decorators import api_view
 
 
 class PatientViewSet(viewsets.ModelViewSet):
@@ -80,3 +81,13 @@ class DistanceViewSet(viewsets.ModelViewSet):
 
     queryset = Distance.objects.all()
     serializer_class = DistanceSerializer
+
+# Register a new user
+@api_view(['POST'])
+def register(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # Return a 400 status code if the user data is invalid.
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Address(models.Model):
@@ -62,3 +63,10 @@ class Patient(models.Model):
     # Represent the patient as a string on the admin page
     def __str__(self):
         return f"{self.lastname}, {self.firstname}"
+    
+    class UserProfile(models.Model):
+        user = models.OneToOneField(User, on_delete=models.CASCADE)
+        is_editor = models.BooleanField(default=False)
+
+        def __str__(self):
+            return self.user.username
