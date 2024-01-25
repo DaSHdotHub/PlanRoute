@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent />
   <div class="container mt-4">
     <button @click="logout">Logout</button>
     <h2>Dashboard</h2>
@@ -23,12 +24,19 @@
       </tbody>
     </table>
   </div>
+  <FooterComponent />
 </template>
   
 <script>
+import HeaderComponent from '@/components/shared/HeaderComponent.vue';
+import FooterComponent from '@/components/shared/FooterComponent.vue';
 import axios from 'axios';
 
 export default {
+  components: {
+    HeaderComponent,
+    FooterComponent
+  },
   data() {
     return {
       patients: [],
