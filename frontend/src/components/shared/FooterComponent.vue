@@ -37,6 +37,9 @@ export default {
 /* Styling for the Footer */
 .footer {
   background-color: #98ff98; /* Example color */
+  position: fixed;
+  bottom: 0;
+  min-width: 100vw;
 }
 
 .btn-floating {
