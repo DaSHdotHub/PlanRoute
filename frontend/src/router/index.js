@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LandingPage from "@/components/LandingPage.vue";
+import LandingPage from "@/views/LandingPage.vue";
+import Dashboard from "@/views/UserDashboard.vue";
 import Login from "@/components/UserLogin.vue";
 import Register from "@/components/UserRegister.vue";
-import Dashboard from "@/components/UserDashboard.vue";
 import ViewPatient from "@/components/ViewPatient.vue";
 import EditPatient from "@/components/EditPatient.vue";
 
