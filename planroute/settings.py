@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'routing.apps.RoutingConfig',
     'rest_framework_simplejwt',
-
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 

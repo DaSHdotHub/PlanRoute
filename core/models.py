@@ -64,9 +64,9 @@ class Patient(models.Model):
     def __str__(self):
         return f"{self.lastname}, {self.firstname}"
     
-    class UserProfile(models.Model):
-        user = models.OneToOneField(User, on_delete=models.CASCADE)
-        is_editor = models.BooleanField(default=False)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_editor = models.BooleanField(default=False)
 
-        def __str__(self):
-            return self.user.username
+    def __str__(self):
+        return self.user.username
