@@ -126,7 +126,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
             # Determine the base domain based on the environment
             is_development = os.environ.get('DEVELOPMENT', 'False') == 'True'
-            domain_url = 'http://127.0.0.1:8000' if is_development else os.environ.get('PRODUCTION_DOMAIN', 'https://your_production_domain.com')
+            domain_url = 'http://localhost:8000' if is_development else os.environ.get('PRODUCTION_DOMAIN', 'https://your_production_domain.com')
 
             # confirmation endpoint
             url_key = '/redirect/'
