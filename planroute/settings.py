@@ -39,14 +39,14 @@ if DEVELOPMENT:
         'localhost',
         ]
     CORS_ALLOW_ALL_ORIGINS = True
-    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000"]
+    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000", "https://ondigitalocean.app"]
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['.herokuapp.com']
+    ALLOWED_HOSTS = ['.herokuapp.com','https://ondigitalocean.app']
     CORS_ALLOW_ALL_ORIGINS = False
     allowed_origins = os.environ.get('ALLOWED_CORS_ORIGINS', '')
     CORS_ALLOWED_ORIGINS = allowed_origins.split(',') if allowed_origins else []
-    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com"]
+    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://ondigitalocean.app"]
 
 # Application definition
 
