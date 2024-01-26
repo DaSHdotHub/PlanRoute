@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from rest_framework import viewsets, status
@@ -105,21 +106,37 @@ class UserViewSet(viewsets.ModelViewSet):
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
+            user = serializer.save(is_active=False)
+            
+            # Hash the password
+            if 'password' in request.data:
+                user.set_password(request.data['password'])
+                user.save()
+            # Assign user to group based on the 'is_editor' field
+            if 'is_editor' in request.data and request.data['is_editor']:
+                crud_group = Group.objects.get(name='CRUD Users')
+                user.groups.add(crud_group)
+            else:
+                readonly_group = Group.objects.get(name='Read-Only Users')
+                user.groups.add(readonly_group)
+
+            user.save()
+            
             token, created = Token.objects.get_or_create(user=user)
 
-            # Determine the base URL based on the environment
+            # Determine the base domain based on the environment
             is_development = os.environ.get('DEVELOPMENT', 'False') == 'True'
-            base_url = 'http://127.0.0.1:8000/api/confirm/' if is_development else os.environ.get(
-                'PRODUCTION_URL', 'http://your_production_domain.com/api/confirm/')
+            domain_url = 'http://127.0.0.1:8000' if is_development else os.environ.get('PRODUCTION_DOMAIN', 'https://your_production_domain.com')
+
+            # confirmation endpoint
+            url_key = '/redirect/'
 
             # Prepare email content
-            confirmation_url = f'{base_url}{token.key}'
+            confirmation_url = f'{domain_url}{url_key}{token.key}'
             html_content = render_to_string('email_confirmation.html', {
                                             'confirmation_url': confirmation_url})
             # Plain text version for email clients that don't support HTML
             text_content = strip_tags(html_content)
-
             # Send confirmation email
             send_mail(
                 subject='Confirm your PlanRoute Account',
@@ -134,18 +151,18 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['POST'], detail=False, url_path='confirm/(?P<key>.+)')
+    @action(methods=['GET'], detail=False, url_path='confirm/(?P<key>.+)')
     def confirm(self, request, key=None):
         try:
             token = Token.objects.get(key=key)
             user = token.user
-            user.is_active = True
-            user.save()
-            token.delete()
-            return Response({"message": "Email confirmed successfully"}, status=status.HTTP_200_OK)
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+                token.delete()
+                return Response({"message": "Account successfully activated"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Account already active"}, status=status.HTTP_400_BAD_REQUEST)
         except Token.DoesNotExist:
             return Response({"message": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def create(self, request, *args, **kwargs):
-        # This method should be adjusted if you have custom logic for user creation
-        return super(UserViewSet, self).create(request, *args, **kwargs)
