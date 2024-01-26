@@ -44,7 +44,8 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/users/register/', this.user);
+        axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+        const response = await axios.post('/api/users/register/', this.user);
         console.log('Registration successful', response);
         // Redirect or further actions after successful registration
       } catch (error) {

@@ -46,7 +46,8 @@
       async fetchPatients() {
         this.loading = true;
         try {
-          const response = await axios.get('http://127.0.0.1:8000/core/patients/');
+          axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+          const response = await axios.get('/core/patients/');
           this.patients = response.data;
         } catch (error) {
           console.error('There was an error fetching the patients:', error);

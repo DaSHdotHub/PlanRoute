@@ -35,9 +35,10 @@ axios.interceptors.response.use(response => response, async error => {
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh_token');
+      axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
       if (refreshToken) {
         try {
-          const response = await axios.post('http://127.0.0.1:8000/api/token/refresh/', { refresh: refreshToken });
+          const response = await axios.post('/api/token/refresh/', { refresh: refreshToken });
           const newAccessToken = response.data.access;
           localStorage.setItem('access_token', newAccessToken);
           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;

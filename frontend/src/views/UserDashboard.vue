@@ -63,9 +63,11 @@ export default {
     editPatient(patient) {
       this.$router.push({ name: 'EditPatient', params: { id: patient.id } });
     },
+    
     async fetchPatients() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/patients/', {
+        axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+        const response = await axios.get('/api/patients/', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`
           }

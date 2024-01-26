@@ -36,8 +36,8 @@ export default {
         confirmEmail() {
             // Extract the token from the URL
             const token = this.$route.params.token;
-
-            axios.get(`http://127.0.0.1:8000/api/users/confirm/${token}`)
+            axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+            axios.get('/api/users/confirm/${token}')
                 .then(() => {
                     this.confirmed = true;
                 })
