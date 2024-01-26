@@ -39,12 +39,14 @@ if DEVELOPMENT:
         'localhost',
         ]
     CORS_ALLOW_ALL_ORIGINS = True
+    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000"]
 else:
     DEBUG = False
     ALLOWED_HOSTS = ['.herokuapp.com']
     CORS_ALLOW_ALL_ORIGINS = False
     allowed_origins = os.environ.get('ALLOWED_CORS_ORIGINS', '')
     CORS_ALLOWED_ORIGINS = allowed_origins.split(',') if allowed_origins else []
+    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com"]
 
 # Application definition
 
@@ -65,8 +67,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -109,9 +111,7 @@ DATABASES = {
         dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.herokuapp.com"
-]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

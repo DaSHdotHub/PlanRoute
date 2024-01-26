@@ -5,7 +5,7 @@ import UserDashboard from "@/views/UserDashboard.vue";
 import UserLogin from "@/components/UserLogin.vue";
 import UserRegister from "@/components/UserRegister.vue";
 import ViewPatient from "@/components/ViewPatient.vue";
-import EditPatient from "@/components/EditPatient.vue";
+import EditPatient from "@/components/EditPatient.vue"; 
 
 const routes = [
   { path: "/", name: "Home", component: LandingPage },
