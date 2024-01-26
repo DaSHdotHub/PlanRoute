@@ -28,11 +28,13 @@
             </div>
             <div class="mb-3">
                 <label for="last_editor" class="form-label">Edited by</label>
-                <input type="text" class="form-control" id="last_editor" :value="formatEditor(patient.last_editor, patient.last_edited)" readonly>
+                <input type="text" class="form-control" id="last_editor"
+                    :value="formatEditor(patient.last_editor, patient.last_edited)" readonly>
             </div>
             <div class="mb-3">
                 <label for="creator" class="form-label">Created by</label>
-                <input type="text" class="form-control" id="creator" :value="formatCreator(patient.creator, patient.created_at)" readonly>
+                <input type="text" class="form-control" id="creator"
+                    :value="formatCreator(patient.creator, patient.created_at)" readonly>
             </div>
             <!-- Add Back button -->
             <button type="button" class="btn btn-secondary" @click="goBack">Back</button>
@@ -62,6 +64,7 @@ export default {
         await this.fetchPatientDetails(patientId);
     },
     methods: {
+        // eslint-disable-next-line
         async fetchPatientDetails(patientId) {
             try {
                 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
@@ -84,14 +87,14 @@ export default {
             return address ? `${address.street} ${address.street_number}, ${address.zip_code} ${address.city}` : 'No Address';
         },
         formatGeo(address) {
-            return address ? `${address.latitude} ${address.longitude}`: 'No Geo Information';
+            return address ? `${address.latitude} ${address.longitude}` : 'No Geo Information';
         },
         formatEditor(editor, edited) {
-            return editor ? `Last edited on ${edited} by ${editor}`: 'No Editor Information';
+            return editor ? `Last edited on ${edited} by ${editor}` : 'No Editor Information';
             //TODO: Lookup editor in Users
         },
         formatCreator(creator, created) {
-            return creator ? `Created on ${created} by ${creator}`: 'No Creator Information';
+            return creator ? `Created on ${created} by ${creator}` : 'No Creator Information';
             //TODO: Lookup creator in Users
         },
         goBack() {
