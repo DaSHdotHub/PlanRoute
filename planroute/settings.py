@@ -47,6 +47,7 @@ else:
     ALLOWED_HOSTS = os.environ.get("PROD_ALLOWED_HOSTS", "").split(",")
     CORS_ALLOWED_ORIGINS = os.environ.get("PROD_CORS_ALLOWED_ORIGINS", "").split(",")
     CSRF_TRUSTED_ORIGINS = os.environ.get("PROD_CSRF_TRUSTED_ORIGINS", "").split(",")
+    CORS_ALLOW_CREDENTIALS = os.environ.get("PROD_CORS_ALLOW_CREDENTIALS", "False") == "True"
 
 # Application definition
 
