@@ -21,8 +21,7 @@ class DistanceSerializer(serializers.ModelSerializer):
         
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    is_editor = serializers.BooleanField(source='userprofile.is_editor')
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'is_editor')
+        fields = ('username', 'password', 'email')

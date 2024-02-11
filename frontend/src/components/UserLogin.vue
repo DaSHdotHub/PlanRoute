@@ -27,7 +27,8 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+        axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+        const response = await axios.post('/api/token/', {
           username: this.username,
           password: this.password
         });

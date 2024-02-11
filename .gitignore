@@ -16,6 +16,7 @@ staticfiles/
 .DS_Store
 node_modules
 frontend/dist
+.env*
 
 
 ## local env files
