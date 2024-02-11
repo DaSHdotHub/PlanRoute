@@ -9,15 +9,19 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
+from django.shortcuts import render
 from .services import PatientService
 import os
 
 from .models import Patient, Address, Distance
 from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer, UserSerializer
 
-
+def landing_page(request):
+    return render(request, 'landing_page.html')
+    
 class PatientViewSet(viewsets.ModelViewSet):
-    # No changes to permissions, queryset, or serializer_class
+    queryset = Patient.objects.all()
+    serializer_class = PatientSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
