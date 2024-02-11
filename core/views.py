@@ -2,6 +2,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.shortcuts import redirect
+from django.contrib.auth.models import User, Group
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from rest_framework import viewsets, status
@@ -29,8 +31,15 @@ class PatientViewSet(viewsets.ModelViewSet):
         patient_data = serializer.validated_data
         
         address_serializer = AddressSerializer(data=request.data.get('address'))
+        patient_data = serializer.validated_data
+        
+        address_serializer = AddressSerializer(data=request.data.get('address'))
         if address_serializer.is_valid(raise_exception=True):
             address_data = address_serializer.validated_data
+            
+            patient, created = PatientService.create_or_update_patient(patient_data, address_data)
+            
+            if created:
             
             patient, created = PatientService.create_or_update_patient(patient_data, address_data)
             
@@ -87,9 +96,15 @@ class UserViewSet(viewsets.ModelViewSet):
     # Register a new user
     @action(methods=['POST'], detail=False)
     def register(self, request, *args, **kwargs):
+    def register(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            user.set_password(serializer.validated_data['password'])
+            user.is_active = False
+            user.save()
+            UserService.assign_user_to_group(user, request.data.get('is_editor', False))
+            UserService.send_confirmation_email(user)
             user.set_password(serializer.validated_data['password'])
             user.is_active = False
             user.save()
@@ -101,10 +116,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
     @action(methods=['GET'], detail=False, url_path='confirm/(?P<key>.+)')
+
+    @action(methods=['GET'], detail=False, url_path='confirm/(?P<key>.+)')
     def confirm(self, request, key=None):
         try:
             token = Token.objects.get(key=key)
             user = token.user
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+                token.delete()
+                return Response({"message": "Account successfully activated"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Account already active"}, status=status.HTTP_400_BAD_REQUEST)
             if not user.is_active:
                 user.is_active = True
                 user.save()
