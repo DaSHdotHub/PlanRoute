@@ -41,7 +41,7 @@ class PatientViewSet(viewsets.ModelViewSet):
             
             if created:
             
-            patient, created = PatientService.create_or_update_patient(patient_data, address_data)
+                patient, created = PatientService.create_or_update_patient(patient_data, address_data)
             
             if created:
                 headers = self.get_success_headers(serializer.data)
@@ -95,7 +95,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     # Register a new user
     @action(methods=['POST'], detail=False)
-    def register(self, request, *args, **kwargs):
     def register(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
