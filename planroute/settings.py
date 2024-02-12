@@ -38,6 +38,8 @@ if DEVELOPMENT:
         '127.0.0.1',
         'localhost',
         ]
+    additional_hosts = os.environ.get("DEVELOPMENT_URL", "")
+    ALLOWED_HOSTS.extend([host for host in additional_hosts.split(",") if host])
     CORS_ALLOW_ALL_ORIGINS = True
     #CORS_ALLOWED_ORIGINS = ['http://localhost:8080', 'http://127.0.0.1:8000']
     CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000", "https://*.ondigitalocean.app"]
