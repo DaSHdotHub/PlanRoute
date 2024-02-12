@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 import dj_database_url
+import sys
 if os.path.isfile('env.py'):
     import env
 
@@ -55,9 +56,9 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -108,14 +109,19 @@ REST_FRAMEWORK = {
 WSGI_APPLICATION = 'planroute.wsgi.application'
 
 
-# Database
+# Databases
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+# Setting the default database from DATABASE_URL
 DATABASES = {
-    'default': 
-        dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
 }
 
+# Use local SQLite database for tests
+if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Running tests
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mytestdatabase',
+    }
 
 
 # Password validation

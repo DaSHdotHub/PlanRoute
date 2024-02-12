@@ -12,11 +12,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from django.shortcuts import render
-from .services import PatientService
 import os
 
-from .models import Patient, Address, Distance
-from .serializers import PatientSerializer, AddressSerializer, DistanceSerializer, UserSerializer
+from core.models import Patient, Address, Distance
+from core.serializers import PatientSerializer, AddressSerializer, DistanceSerializer, UserSerializer
+from core.services import PatientService, UserService, AddressService
+
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -34,11 +35,13 @@ class PatientViewSet(viewsets.ModelViewSet):
         patient_data = serializer.validated_data
         
         address_serializer = AddressSerializer(data=request.data.get('address'))
+        print(patient_data)
         if address_serializer.is_valid(raise_exception=True):
             address_data = address_serializer.validated_data
             
             patient, created = PatientService.create_or_update_patient(patient_data, address_data)
-            
+            print(patient)
+            print(created)
             if created:
             
                 patient, created = PatientService.create_or_update_patient(patient_data, address_data)

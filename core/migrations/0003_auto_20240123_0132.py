@@ -5,25 +5,36 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 def create_groups_and_permissions(apps, schema_editor):
+    Group = apps.get_model('auth', 'Group')
+    Permission = apps.get_model('auth', 'Permission')
+    ContentType = apps.get_model('contenttypes', 'ContentType')
+
     # Create CRUD Users group
     crud_group, _ = Group.objects.get_or_create(name='CRUD Users')
-    # Assign permissions (add, change, delete, view) for relevant models
 
     # Create Read-Only Users group
     readonly_group, _ = Group.objects.get_or_create(name='Read-Only Users')
-    # Assign view permissions for relevant models
-    
+
     # Assign permissions to CRUD group
     for model in ['address', 'patient', 'distance']:
-        content_type = ContentType.objects.get(app_label='core', model=model)
-        permissions = Permission.objects.filter(content_type=content_type)
-        crud_group.permissions.set(permissions)
+        try:
+            content_type = ContentType.objects.get(app_label='core', model=model)
+            permissions = Permission.objects.filter(content_type=content_type)
+            crud_group.permissions.set(permissions)
+        except ContentType.DoesNotExist:
+            print(f"ContentType for model '{model}' not found. Skipping.")
 
     # Assign view-only permissions to Read-Only group
     for model in ['address', 'patient']:
-        content_type = ContentType.objects.get(app_label='core', model=model)
-        view_permission = Permission.objects.get(content_type=content_type, codename='view_' + model)
-        readonly_group.permissions.add(view_permission)
+        try:
+            content_type = ContentType.objects.get(app_label='core', model=model)
+            view_permission = Permission.objects.filter(content_type=content_type, codename='view_' + model)
+            readonly_group.permissions.add(*view_permission)
+        except ContentType.DoesNotExist:
+            print(f"ContentType for model '{model}' not found. Skipping.")
+
+def reverse_func(apps, schema_editor):
+    pass
 
 class Migration(migrations.Migration):
 
@@ -32,5 +43,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_groups_and_permissions),
+        migrations.RunPython(create_groups_and_permissions, reverse_code=reverse_func),
     ]
