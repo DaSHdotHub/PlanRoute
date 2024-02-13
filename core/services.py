@@ -5,7 +5,6 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from .models import Patient, Address
 from rest_framework.authtoken.models import Token
-import os
 
 class PatientService:
     @staticmethod

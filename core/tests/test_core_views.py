@@ -1,7 +1,6 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-from core.models import Patient
 
 class PatientViewSetTest(APITestCase):
     def test_create_patient(self):
