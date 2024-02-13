@@ -15,6 +15,7 @@ class PatientService:
         patient, created = Patient.objects.get_or_create(
             firstname=patient_data['firstname'],
             lastname=patient_data['lastname'],
+            birth_date=patient_data['birth_date'],
             defaults=patient_data
         )
         return patient, created

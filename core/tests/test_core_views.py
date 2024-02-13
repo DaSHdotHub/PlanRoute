@@ -9,6 +9,7 @@ class PatientViewSetTest(APITestCase):
         data = {
             "firstname": "Dieter",
             "lastname": "Musterhausen",
+            "birth_date": "1990-01-01",
             "address": {
                 "street": "Friedenstr.",
                 "street_number": "23",
