@@ -14,7 +14,6 @@ import os
 from pathlib import Path
 from datetime import timedelta
 import dj_database_url
-import sys
 if os.path.isfile('env.py'):
     import env
 
