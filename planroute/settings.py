@@ -116,8 +116,8 @@ DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
 }
 
-# Use local SQLite database for tests
-if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Running tests
+# Check for a custom environment variable
+if os.environ.get('RUNNING_TESTS') == 'True':
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mytestdatabase',

@@ -32,19 +32,10 @@ class PatientViewSet(viewsets.ModelViewSet):
         patient_data = serializer.validated_data
         
         address_serializer = AddressSerializer(data=request.data.get('address'))
-        patient_data = serializer.validated_data
-        
-        address_serializer = AddressSerializer(data=request.data.get('address'))
-        print(patient_data)
         if address_serializer.is_valid(raise_exception=True):
             address_data = address_serializer.validated_data
             
             patient, created = PatientService.create_or_update_patient(patient_data, address_data)
-            print(patient)
-            print(created)
-            if created:
-            
-                patient, created = PatientService.create_or_update_patient(patient_data, address_data)
             
             if created:
                 headers = self.get_success_headers(serializer.data)
