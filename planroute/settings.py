@@ -20,7 +20,6 @@ if os.path.isfile('env.py'):
 # Check if we are in development mode    
 DEVELOPMENT = os.environ.get('DEVELOPMENT') == 'True'
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,7 +33,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 if DEVELOPMENT:
     DEBUG = True
-    LOGIN_URL = '/admin/login/'
     ALLOWED_HOSTS = [
         '127.0.0.1',
         'localhost',
@@ -42,7 +40,6 @@ if DEVELOPMENT:
     additional_hosts = os.environ.get("DEVELOPMENT_URL", "")
     ALLOWED_HOSTS.extend([host for host in additional_hosts.split(",") if host])
     CORS_ALLOW_ALL_ORIGINS = True
-    #CORS_ALLOWED_ORIGINS = ['http://localhost:8080', 'http://127.0.0.1:8000']
     CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000", "https://*.ondigitalocean.app"]
 else:
     DEBUG = False
@@ -181,3 +178,6 @@ EMAIL_USE_SSL = False
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
+#Correct login path for e.g. swagger
+LOGIN_URL = '/admin/login/'

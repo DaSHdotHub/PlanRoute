@@ -4,6 +4,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 from .views import PatientViewSet, AddressViewSet, DistanceViewSet, UserViewSet
+import os
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -21,9 +22,16 @@ router.register(r'addresses', AddressViewSet, basename='address')
 router.register(r'distances', DistanceViewSet,  basename='distance')
 router.register(r'users', UserViewSet, basename='user')
 
+# The API URLs are now determined automatically by the router.
 urlpatterns = [
+    path('', include(router.urls)),
+]
+
+# Add the Swagger and Redoc documentation for the API in development mode
+dev_mode = os.environ.get("DEVELOPMENT")
+if dev_mode:
+    urlpatterns += [
     re_path(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"),
     re_path(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     re_path(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path('', include(router.urls)),
 ]   
