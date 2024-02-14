@@ -112,14 +112,6 @@ DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
 }
 
-# Check for a custom environment variable
-if os.environ.get('RUNNING_TESTS') == 'True':
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mytestdatabase',
-    }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -181,3 +173,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 #Correct login path for e.g. swagger
 LOGIN_URL = '/admin/login/'
+
+# Check for a custom environment variable
+if os.environ.get('RUNNING_TESTS') == 'True':
+    EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mytestdatabase',
+    }
