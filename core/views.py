@@ -1,19 +1,10 @@
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib.auth.models import User, Group
-from django.shortcuts import redirect
-from django.contrib.auth.models import User, Group
-from django.shortcuts import redirect
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from rest_framework import viewsets, status
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.shortcuts import render
-import os
-
+from django.core.exceptions import ValidationError
 from core.models import Patient, Address, Distance
 from core.serializers import (
     PatientSerializer,
@@ -21,7 +12,7 @@ from core.serializers import (
     DistanceSerializer,
     UserSerializer,
 )
-from core.services import PatientService, UserService, AddressService
+from core.services import PatientService, UserService
 
 
 def landing_page(request):
@@ -105,75 +96,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=["POST"], detail=False)
     def register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save(is_active=False)
-            user.set_password(request.data["password"])
-            user.save()
-
-            # Directly assign user to group based on 'is_editor' field
-            group_name = (
-                "CRUD Users"
-                if request.data.get("is_editor", False)
-                else "Read-Only Users"
-            )
-            group = Group.objects.get(name=group_name)
-            user.groups.add(group)
-            user.save()
-
-            # Generate token for email confirmation
-            token, created = Token.objects.get_or_create(user=user)
-            # Determine the base domain based on the environment
-            if os.environ.get("DEVELOPMENT", "False") == "True":
-                domain_url = "http://localhost:8000"
-            elif os.environ.get("DEVELOPMENT_URL", "") != "":
-                domain_url = os.environ.get("DEVELOPMENT_URL")
-            else:
-                domain_url = os.environ.get("PRODUCTION_URL")
-
-            url_key = "/redirect/"
-
-            # Prepare email content
-            confirmation_url = f"{domain_url}{url_key}{token.key}"
-            html_content = render_to_string(
-                "email_confirmation.html", {"confirmation_url": confirmation_url}
-            )
-            # Plain text version for email clients that don't support HTML
-            text_content = strip_tags(html_content)
-            # Send confirmation email
-            send_mail(
-                subject="Confirm your PlanRoute Account",
-                message=text_content,
-                html_message=html_content,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-
+        try:
+            user = UserService.register_user(request.data)
+            serializer = self.get_serializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as e:
+            return Response(e.message_dict, status=status.HTTP_400_BAD_REQUEST)
 
-    # Confirm user account
     @action(methods=["GET"], detail=False, url_path="confirm/(?P<key>.+)")
     def confirm(self, request, key=None):
-        try:
-            token = Token.objects.get(key=key)
-            user = token.user
-            if not user.is_active:
-                user.is_active = True
-                user.save()
-                token.delete()
-                return Response(
-                    {"message": "Account successfully activated"},
-                    status=status.HTTP_200_OK,
-                )
-            else:
-                return Response(
-                    {"message": "Account already active"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        except Token.DoesNotExist:
-            return Response(
-                {"message": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        message, success = UserService.confirm_user(key)
+        if success:
+            return Response({"message": message}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": message}, status=status.HTTP_400_BAD_REQUEST)
