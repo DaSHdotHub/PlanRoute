@@ -110,3 +110,14 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"message": message}, status=status.HTTP_200_OK)
         else:
             return Response({"message": message}, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(methods=["POST"], detail=False)
+    def login(self, request):
+        user = UserService.login_user(request.data)
+        if user:
+            serializer = self.get_serializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"message": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
+            )

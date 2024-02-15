@@ -9,25 +9,26 @@ from django.conf import settings
 
 from core.models import Address, Patient
 
+
 class PatientService:
     @staticmethod
     def create_or_update_patient(patient_data, address_data):
         address, _ = Address.objects.get_or_create(**address_data)
-        patient_data['address'] = address
+        patient_data["address"] = address
         patient, created = Patient.objects.get_or_create(
-            firstname=patient_data['firstname'],
-            lastname=patient_data['lastname'],
-            birth_date=patient_data['birth_date'],
-            defaults=patient_data
+            firstname=patient_data["firstname"],
+            lastname=patient_data["lastname"],
+            birth_date=patient_data["birth_date"],
+            defaults=patient_data,
         )
         return patient, created
+
 
 class AddressService:
     @staticmethod
     def create_or_update_address(address_data):
         address, created = Address.objects.get_or_create(**address_data)
         return address, created
-
 
 
 class UserService:
@@ -37,14 +38,16 @@ class UserService:
         Handles the registration of a new user.
         """
         # Check for duplicate username
-        if User.objects.filter(username=data['username']).exists():
-            raise ValidationError({'username': ['A user with that username already exists.']})
+        if User.objects.filter(username=data["username"]).exists():
+            raise ValidationError(
+                {"username": ["A user with that username already exists."]}
+            )
 
         user = User.objects.create_user(
-            username=data['username'],
-            email=data['email'],
-            password=data['password'],
-            is_active=False  # User will be activated after email confirmation
+            username=data["username"],
+            email=data["email"],
+            password=data["password"],
+            is_active=False,  # User will be activated after email confirmation
         )
 
         # Assign user to group based on 'is_editor' field
@@ -68,7 +71,7 @@ class UserService:
     @staticmethod
     def _get_domain_url():
         if os.environ.get("DEVELOPMENT", "False") == "True":
-            return "http://localhost:8000"
+            return "http://localhost:8080"
         elif os.environ.get("DEVELOPMENT_URL", "") != "":
             return os.environ.get("DEVELOPMENT_URL")
         return os.environ.get("PRODUCTION_URL")
@@ -105,3 +108,13 @@ class UserService:
                 return {"message": "Account already active"}, False
         except Token.DoesNotExist:
             return {"message": "Invalid token"}, False
+
+    @staticmethod
+    def login_user(data):
+        """
+        Handles the login of a user.
+        """
+        user = User.objects.filter(username=data["username"]).first()
+        if user and user.check_password(data["password"]):
+            return user
+        return None
