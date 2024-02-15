@@ -14,11 +14,12 @@ import os
 from pathlib import Path
 from datetime import timedelta
 import dj_database_url
-if os.path.isfile('env.py'):
+
+if os.path.isfile("env.py"):
     import env
 
-# Check if we are in development mode    
-DEVELOPMENT = os.environ.get('DEVELOPMENT') == 'True'
+# Check if we are in development mode
+DEVELOPMENT = os.environ.get("DEVELOPMENT") == "True"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,82 +35,91 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 if DEVELOPMENT:
     DEBUG = True
     ALLOWED_HOSTS = [
-        '127.0.0.1',
-        'localhost',
-        ]
+        "127.0.0.1",
+        "localhost",
+    ]
     additional_hosts = os.environ.get("DEVELOPMENT_URL", "")
     ALLOWED_HOSTS.extend([host for host in additional_hosts.split(",") if host])
-    CORS_ALLOW_ALL_ORIGINS = True
-    CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "http://localhost:8080", "http://127.0.0.1:8000", "https://*.ondigitalocean.app"]
+    CORS_ALLOWED_ORIGINS = ["http://localhost:8080"]
+    CORS_ALLOW_CREDENTIALS = True
+    # CORS_ALLOW_ALL_ORIGINS = True
+    CSRF_TRUSTED_ORIGINS = [
+        "https://*.herokuapp.com",
+        "http://localhost:8080",
+        "http://127.0.0.1:8000",
+        "https://*.ondigitalocean.app",
+    ]
 else:
     DEBUG = False
     CORS_ALLOW_ALL_ORIGINS = False
     ALLOWED_HOSTS = os.environ.get("PROD_ALLOWED_HOSTS", "").split(",")
     CORS_ALLOWED_ORIGINS = os.environ.get("PROD_CORS_ALLOWED_ORIGINS", "").split(",")
     CSRF_TRUSTED_ORIGINS = os.environ.get("PROD_CSRF_TRUSTED_ORIGINS", "").split(",")
-    CORS_ALLOW_CREDENTIALS = os.environ.get("PROD_CORS_ALLOW_CREDENTIALS", "False") == "True"
+    CORS_ALLOW_CREDENTIALS = (
+        os.environ.get("PROD_CORS_ALLOW_CREDENTIALS", "False") == "True"
+    )
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.contenttypes',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'core.apps.CoreConfig',
-    'routing.apps.RoutingConfig',
-    'rest_framework_simplejwt',
-    'rest_framework.authtoken',
-    'corsheaders',
-    'drf_yasg',
+    "django.contrib.contenttypes",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "core.apps.CoreConfig",
+    "routing.apps.RoutingConfig",
+    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    "corsheaders",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
-ROOT_URLCONF = 'planroute.urls'
+ROOT_URLCONF = "planroute.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "frontend/dist")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
 
-WSGI_APPLICATION = 'planroute.wsgi.application'
+WSGI_APPLICATION = "planroute.wsgi.application"
 
 
 # Databases
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # Setting the default database from DATABASE_URL
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
+    "default": dj_database_url.config(default=os.environ.get("DATABASE_URL")),
 }
 
 # Password validation
@@ -117,16 +127,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -134,9 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -146,38 +156,38 @@ USE_TZ = True
 
 # Edit JWT uptime
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # EMAIL Section
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_HOST_USER = os.environ.get("EMAIL_ADDRESS")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
-#Correct login path for e.g. swagger
-LOGIN_URL = '/admin/login/'
+# Correct login path for e.g. swagger
+LOGIN_URL = "/admin/login/"
 
 # Check for a custom environment variable
-if os.environ.get('RUNNING_TESTS') == 'True':
-    EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mytestdatabase',
+if os.environ.get("RUNNING_TESTS") == "True":
+    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mytestdatabase",
     }
