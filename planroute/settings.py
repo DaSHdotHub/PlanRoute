@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 import dj_database_url
 
 if os.path.isfile("env.py"):
@@ -155,9 +156,11 @@ USE_L10N = True
 USE_TZ = True
 
 # Edit JWT uptime
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+DEFAULT_AUTHENTICATION_CLASSESJWT = {
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME', default=360, cast=int)),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME', default=2, cast=int)),
 }
 
 # Static files (CSS, JavaScript, Images)

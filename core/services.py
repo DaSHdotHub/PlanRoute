@@ -1,9 +1,11 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 import os
 from django.conf import settings
 
@@ -69,6 +71,27 @@ class UserService:
         return user
 
     @staticmethod
+    def login_user(data):
+        username = data.get("username")
+        password = data.get("password")
+        user = authenticate(
+            username=username, password=password
+        )  # Django's built-in authenticate method
+
+        if user is not None:
+            # User is authenticated, create tokens
+            refresh = RefreshToken.for_user(user)
+            return {
+                "access_token": str(refresh.access_token),
+                "refresh_token": str(refresh),
+                "token_type": "Bearer",
+                "user": {"username": user.username, "email": user.email, "is_editor": user.groups.filter(name="CRUD Users").exists()},
+            }
+        else:
+            # Authentication failed
+            return None
+
+    @staticmethod
     def _get_domain_url():
         if os.environ.get("DEVELOPMENT", "False") == "True":
             return "http://localhost:8080"
@@ -108,13 +131,3 @@ class UserService:
                 return {"message": "Account already active"}, False
         except Token.DoesNotExist:
             return {"message": "Invalid token"}, False
-
-    @staticmethod
-    def login_user(data):
-        """
-        Handles the login of a user.
-        """
-        user = User.objects.filter(username=data["username"]).first()
-        if user and user.check_password(data["password"]):
-            return user
-        return None
