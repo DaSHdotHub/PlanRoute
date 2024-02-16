@@ -48,7 +48,6 @@
   <script>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useToast } from 'bootstrap-vue-3';
   
   export default {
     props: {
@@ -56,9 +55,7 @@
     },
     setup(props) {
       const router = useRouter();
-      const toast = useToast();
   
-      // Simulate fetching patient data
       // Replace with actual fetching logic
       const patientData = ref({
         id: props.patientId,
@@ -75,12 +72,10 @@
   
       const savePatient = () => {
         // Implement saving logic here
-        toast.success('Patient saved successfully.');
         router.push({ name: 'Dashboard' });
       };
   
       const exitWithoutSaving = () => {
-        toast.info('Exited, discarding changes.');
         router.push({ name: 'Dashboard' }); 
       };
   
