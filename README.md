@@ -249,6 +249,31 @@ npm is a package manager for JavaScript, and is necessary for managing and insta
 - The Django server typically runs at `http://127.0.0.1:8000`
 - The Vue.js frontend can usually be accessed at `http://localhost:8080`
 
+## Complete List of Environment Variables
+
+Environment variables are used to configure various aspects of the application. Here's a breakdown of the variables and their descriptions:
+
+- `API_KEY`: The API key used for accessing external services. Here it is TomTom, available at TomTom, free tier possible.
+- `DEVELOPMENT`: Specifies whether the application is in development mode. Set to `True` for development and `False` for production.
+- `DATABASE_URL`: The URL for connecting to the PostgreSQL database.
+- `SECRET_KEY`: A secret key used for cryptographic signing in Django applications.
+- `EMAIL_ADDRESS`: The email address used for sending emails from the application.
+- `EMAIL_PASSWORD`: The password associated with the email address for email authentication. For 2FA eMails, an application password needs to be created.
+- `PRODUCTION_URL`: The URL of the production server. (Frontend). Needed for the correct email token redirect link, without slash at the end.
+- `PROD_ALLOWED_HOSTS`: Comma-separated list of allowed hosts in production.
+- `PROD_CSRF_TRUSTED_ORIGINS`: Comma-separated list of origins that are trusted for Cross-Origin Resource Sharing (CORS) and Cross-Site Request Forgery (CSRF) protection in production.
+- `PROD_CORS_ALLOWED_ORIGINS`: Comma-separated list of origins allowed for CORS requests in production.
+- `PROD_CORS_ALLOW_CREDENTIALS`: Boolean value indicating whether to allow credentials in CORS requests in production.
+- `RUNNING_TESTS`: Specifies whether tests are currently running. Set to `True` during test execution.
+- `DEVELOPMENT_URL`: The URL of the development server, this way you can debug your application on e.g. heroku, paste here the url and set DEVELOPMENT to true.
+- `ACCESS_TOKEN_LIFETIME`: Lifetime of access tokens in minutes.
+- `REFRESH_TOKEN_LIFETIME`: Lifetime of refresh tokens in days.
+
+These environment variables are essential for configuring your Django application and ensuring it operates correctly in various environments.
+For Swagger documentation of the API, DEVELOPMENT needs to be set to true.
+For all tests inside the backend to run correct, DEVELOPMENT and RUNNING_TESTS needs to be set to true.
+
+
 ## Tools and Libraries Used
 
 ### Backend:
