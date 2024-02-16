@@ -1,8 +1,7 @@
-<!-- LandingPage-->
 <template>
-    <HeaderComponent />
-    <div class="landing-page-container">
-    <div class="hero-section" :style="backgroundStyle">
+  <HeaderComponent />
+  <div class="landing-page-container">
+    <div class="hero-section">
       <div class="container text-center">
         <h1 class="display-3 text-white">Making Healthcare Navigation Effortless</h1>
         <p class="lead text-white">Discover the easiest way to manage patients' logistics with real-time routing.</p>
@@ -38,31 +37,22 @@ export default {
       this.$router.push({ name: 'About' });
     },
   },
-  data() {
-    return {
-      // Dynamically bind the background image style
-      backgroundStyle: {
-        backgroundImage: `url(${require('@/assets/images/hero_background.webp')})`,
-      },
-    };
-  }
 };
 </script>
 
 <style>
 .landing-page-container {
   min-height: 100vh;
-  background: linear-gradient(to right, violet, blue, red); 
-  color: #fff; /* Ensures text is readable on the dark background */
 }
 
 .hero-section {
-  background: image(('@/assets/images/hero_background.webp')); /* Semi-transparent white for contrast */
-  margin: 10px 15px 20px; /* Adjust as needed */
+  background-image: url('@/assets/images/hero_background.webp');
+  background-size: cover; /* Ensure the image covers the entire hero section */
+  background-position: center; /* Center the background image */
   padding: 60px 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  position: relative; /* Ensures it's above the background gradient */
-  z-index: 1; /* Higher than the background but below the header */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 </style>
