@@ -22,11 +22,15 @@
               <td>{{ patient.firstname }} {{ patient.lastname }}</td>
               <td>{{ formatAddress(patient.address) }}</td>
               <td>
-                <i class="bi bi-eye-fill" @click="viewPatient(patient)"></i>
                 <i
                   class="bi bi-pencil-fill"
                   v-if="isEditor"
                   @click="editPatient(patient)"
+                ></i>
+                <i 
+                  class="bi bi-eye-fill" 
+                  v-else
+                  @click="viewPatient(patient)"
                 ></i>
               </td>
             </tr>
@@ -81,7 +85,6 @@ const formatAddress = (address) => {
 const userStr = localStorage.getItem('user');
 const user = JSON.parse(userStr);
 const isEditor = user.is_editor;
-console.log(isEditor);
 
 // Use computed property to make sure data is reactive
 const patients = patientsStore.patients;
