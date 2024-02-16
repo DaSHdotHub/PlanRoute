@@ -4,7 +4,10 @@ This document presents the project structure for a web-based application that ca
 
 The application is designed to streamline management processes and route planning, offering a straightforward digital interface for easy interaction. It employs modern web technologies to facilitate effective communication between the front-end and back-end via API and JSON. This is vital for ensuring real-time data exchange, a necessity in the fast-paced environments of healthcare and retail. Deployed on Heroku, the application guarantees reliable access and scalability to cater to the dynamic needs of various service providers. Beyond being a technological tool, this application is envisioned as a means to advance more personalized, efficient, and customer-centric service delivery.
 
-
+# Frontend-URL "gh-pages"
+https://dashdothub.github.io/PlanRoute/#/
+# Backend-URL "heroku"
+https://planroute-6bd1a349d590.herokuapp.com
 
 # Epics and User Stories
 
@@ -249,7 +252,7 @@ npm is a package manager for JavaScript, and is necessary for managing and insta
 - The Django server typically runs at `http://127.0.0.1:8000`
 - The Vue.js frontend can usually be accessed at `http://localhost:8080`
 
-## Complete List of Environment Variables
+# Complete List of Environment Variables
 
 Environment variables are used to configure various aspects of the application. Here's a breakdown of the variables and their descriptions:
 
@@ -274,9 +277,9 @@ For Swagger documentation of the API, DEVELOPMENT needs to be set to true.
 For all tests inside the backend to run correct, DEVELOPMENT and RUNNING_TESTS needs to be set to true.
 
 
-## Tools and Libraries Used
+# Tools and Libraries Used
 
-### Backend:
+## Backend:
 - **asgiref==3.7.2**: ASGI server implementation used by Django.
 - **certifi==2023.11.17**: Python package for providing Mozilla's CA Bundle.
 - **charset-normalizer==3.3.2**: Python package for character set normalization.
@@ -309,7 +312,7 @@ For all tests inside the backend to run correct, DEVELOPMENT and RUNNING_TESTS n
 - **urllib3==2.1.0**: HTTP client for Python.
 - **whitenoise==6.6.0**: Static file serving for Python web apps.
 
-### Frontend:
+## Frontend:
 - **axios**: Promise-based HTTP client for the browser and Node.js.
 - **bootstrap**: Front-end framework for developing responsive and mobile-first websites.
 - **bootstrap-icons**: Official open-source SVG icon library for Bootstrap.
@@ -320,7 +323,7 @@ For all tests inside the backend to run correct, DEVELOPMENT and RUNNING_TESTS n
 - **vue-router**: Official router for Vue.js.
 - Also github pages
 
-## Credits
+# Credits
 
 This project was made possible thanks to the invaluable resources and documentation provided by the following:
 
