@@ -2,9 +2,6 @@
   <div>
     <HeaderComponent />
     <div class="dashboard-container">
-      <button class="mdc-button logout-button" @click="logoutAction">
-        Logout
-      </button>
       <h2>Dashboard</h2>
       <div class="table-responsive">
         <table class="mdc-table">
@@ -17,25 +14,41 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="patient in patients" :key="patient.id">
+            <tr v-for="(patient, index) in paginatedPatients" :key="index">
               <td>{{ patient.id }}</td>
               <td>{{ patient.firstname }} {{ patient.lastname }}</td>
               <td>{{ formatAddress(patient.address) }}</td>
               <td>
-                <i
-                  class="bi bi-pencil-fill"
+                <button
+                  class="btn btn-outline-primary btn-icon"
                   v-if="isEditor"
                   @click="editPatient(patient)"
-                ></i>
-                <i 
-                  class="bi bi-eye-fill" 
+                >
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button
+                  class="btn btn-outline-primary btn-icon"
                   v-else
                   @click="viewPatient(patient)"
-                ></i>
+                >
+                  <i class="bi bi-eye-fill"></i>
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <!-- Pagination controls -->
+      <div class="pagination-controls">
+        <!-- Dropdown to select number of entries per page -->
+        <select v-model="entriesPerPage">
+          <option v-for="option in entriesPerPageOptions" :key="option">
+            {{ option }}
+          </option>
+        </select>
+        <!-- Previous and next page buttons -->
+        <button @click="prevPage">Previous</button>
+        <button @click="nextPage">Next</button>
       </div>
     </div>
     <FooterComponent />
@@ -43,28 +56,46 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import { useAuthStore } from "../stores/auth";
+import { ref, onMounted, computed } from "vue";
 import { usePatientsStore } from "../stores/patient";
 import HeaderComponent from "@/components/shared/HeaderComponent.vue";
 import FooterComponent from "@/components/shared/FooterComponent.vue";
 import { useRouter } from "vue-router";
 
-const authStore = useAuthStore();
 const patientsStore = usePatientsStore();
 const router = useRouter();
 
+// Data properties
+const patients = ref([]);
+const currentPage = ref(1);
+const entriesPerPage = ref(10); // Default value
+const entriesPerPageOptions = [10, 20, 50, 100];
+
+// Fetch patients on component mount
 onMounted(async () => {
-  try {
-    await patientsStore.fetchAllPatients();
-  } catch (error) {
-    console.error("Error fetching patients:", error);
-  }
+  await patientsStore.fetchAllPatients();
+  patients.value = patientsStore.patients;
 });
 
-const logoutAction = async () => {
-  await authStore.logout();
-  router.push({ name: "Home" });
+// Computed property for paginated data
+const paginatedPatients = computed(() => {
+  const startIndex = (currentPage.value - 1) * entriesPerPage.value;
+  const endIndex = startIndex + entriesPerPage.value;
+  return patients.value.slice(startIndex, endIndex);
+});
+
+// Methods for pagination
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
+const nextPage = () => {
+  const totalPages = Math.ceil(patients.value.length / entriesPerPage.value);
+  if (currentPage.value < totalPages) {
+    currentPage.value++;
+  }
 };
 
 const viewPatient = (patient) => {
@@ -84,65 +115,63 @@ const formatAddress = (address) => {
 // Retrieve the user object from local storage and parse json for is_editor
 const userStr = localStorage.getItem('user');
 const user = JSON.parse(userStr);
-const isEditor = user.is_editor;
+const isEditor = user?.is_editor; 
 
-// Use computed property to make sure data is reactive
-const patients = patientsStore.patients;
 </script>
 
 <style scoped>
-.dashboard-container {
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-  /* Slightly transparent background */
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  /* Soft shadow for depth */
+/* Pagination controls styling */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
+
+/* Slightly transparent background */
+.dashboard-container {
+  padding: 20px 20px 200px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Shadow for the table */
 .mdc-table {
   width: 100%;
   background-color: #f0f0f0;
   border-collapse: collapse;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Shadow for the table */
 }
 
+/* Light border for table cells */
 .mdc-table th,
 .mdc-table td {
   padding: 12px 15px;
   border: 1px solid #ddd;
-  /* Light border for table cells */
 }
 
+/* Mint color for header */
 .mdc-table th {
   background-color: #00a896;
-  /* Mint color for header */
   color: white;
 }
 
-.mdc-button {
-  background-color: #02c39a;
-  /* Mint color for button */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.mdc-button:hover {
-  background-color: #028090;
-  /* Darker shade on hover */
-}
-
-.logout-button {
-  margin-bottom: 20px;
-}
-
+/* Responsive table */
 .table-responsive {
   overflow-x: auto;
-  /* Responsive table */
+}
+/* Custom button styles */
+.btn {
+  color: #007770; /* White color on hover */
+  border-color: #007770;
+}
+.btn:hover {
+  background-color: #f0f0f0;
+  border-color: black;
+}
+.btn-icon {
+  border-radius: 8px; /* Rectangle shape */
+  padding: 8px;
 }
 </style>
