@@ -1,7 +1,6 @@
-import axios from 'axios';
-import store from './store';
+import axios from "axios";
+import { useAuthStore } from "./stores/auth"; // Update the path as necessary to import your Pinia store
 const VUE_APP_API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
-
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -12,7 +11,8 @@ const apiClient = axios.create({
 // Add a request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    const token = store.state.accessToken;
+    const authStore = useAuthStore(); // Use the Pinia store
+    const token = authStore.token; // Access the token from the Pinia store
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,12 +27,14 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // Error handling logic
     if (error.response.status === 401 && !error.config._retry) {
       // If 401 is received, try refreshing the token and retrying the request once
+      const authStore = useAuthStore();
       error.config._retry = true;
-      await store.dispatch('refreshTokens');
-      error.config.headers.Authorization = `Bearer ${store.state.accessToken}`;
+
+      await authStore.refreshToken(); 
+
+      error.config.headers.Authorization = `Bearer ${authStore.token}`;
       return apiClient(error.config);
     }
     return Promise.reject(error);
