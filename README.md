@@ -248,3 +248,56 @@ npm is a package manager for JavaScript, and is necessary for managing and insta
 ### Access the Application
 - The Django server typically runs at `http://127.0.0.1:8000`
 - The Vue.js frontend can usually be accessed at `http://localhost:8080`
+
+## Tools and Libraries Used
+
+### Backend:
+- **asgiref==3.7.2**: ASGI server implementation used by Django.
+- **certifi==2023.11.17**: Python package for providing Mozilla's CA Bundle.
+- **charset-normalizer==3.3.2**: Python package for character set normalization.
+- **dj-database-url==0.5.0**: Django package to utilize 12factor inspired DATABASE_URL environment variable.
+- **Django==4.2**: High-level Python Web framework that encourages rapid development and clean, pragmatic design.
+- **django-cors-headers==4.3.1**: Django package for handling the server headers required for Cross-Origin Resource Sharing (CORS).
+- **django-extensions==3.2.3**: Django package providing various extensions for the Django web framework.
+- **djangorestframework==3.14.0**: Django package for building Web APIs.
+- **djangorestframework-simplejwt==5.3.1**: Django package providing JSON Web Token authentication for Django REST Framework.
+- **drf-yasg==1.21.7**: Yet another Swagger generator for Django REST Framework.
+- **exceptiongroup==1.2.0**: Django package for grouping Django exception middleware.
+- **gunicorn==20.1.0**: Python WSGI HTTP Server for UNIX.
+- **idna==3.6**: Internationalized Domain Names in Applications (IDNA) library.
+- **inflection==0.5.1**: Python library for string transformation.
+- **iniconfig==2.0.0**: Pytest plugin for reading configuration from INI-style files.
+- **packaging==23.2**: Core utilities for Python packages.
+- **pluggy==1.4.0**: Plugin registration and hook calling mechanisms for Python.
+- **psycopg2==2.9.9**: PostgreSQL adapter for Python.
+- **PyJWT==2.8.0**: JSON Web Token implementation in Python.
+- **pytest==8.0.0**: Testing framework for Python.
+- **pytest-django==4.8.0**: Pytest plugin for Django applications.
+- **python-decouple==3.8**: Strict separation of settings from code.
+- **pytz==2023.3.post1**: World timezone definitions for Python.
+- **PyYAML==6.0.1**: YAML parser and emitter for Python.
+- **requests==2.31.0**: HTTP library for Python.
+- **sqlparse==0.4.4**: Non-validating SQL parser for Python.
+- **tomli==2.0.1**: TOML parser for Python.
+- **typing_extensions==4.9.0**: Backported and experimental type hints for Python.
+- **uritemplate==4.1.1**: URI template library for Python.
+- **urllib3==2.1.0**: HTTP client for Python.
+- **whitenoise==6.6.0**: Static file serving for Python web apps.
+
+### Frontend:
+- **axios**: Promise-based HTTP client for the browser and Node.js.
+- **bootstrap**: Front-end framework for developing responsive and mobile-first websites.
+- **bootstrap-icons**: Official open-source SVG icon library for Bootstrap.
+- **bootstrap-vue-3**: Bootstrap components for Vue 3.
+- **core-js**: Modular standard library for JavaScript.
+- **pinia**: Intuitive and type-safe store for Vue.js.
+- **vue**: Progressive JavaScript framework for building user interfaces.
+- **vue-router**: Official router for Vue.js.
+- Also github pages
+
+## Credits
+
+This project was made possible thanks to the invaluable resources and documentation provided by the following:
+
+- [Django Documentation](https://docs.djangoproject.com/en/stable/): The official documentation for Django, which served as a fundamental reference for building the backend of this project.
+- [Vue.js Documentation](https://v3.vuejs.org/guide/introduction.html): The official documentation for Vue.js, which provided guidance on frontend development and state management.
